@@ -51,7 +51,11 @@ class RssFeed::Item
 
   private
   def guid
-    Digest::SHA1.hexdigest(@title + @description + @date + @uri)
+    key = [@title, @description, @date, @uri]
+      .reject { |i| i.nil? }
+      .reduce(:+)
+
+    Digest::SHA1.hexdigest(key)
   end
 end
 
